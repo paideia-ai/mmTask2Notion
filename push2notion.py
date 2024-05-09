@@ -88,7 +88,7 @@ def parse_notion_response(response):
 
 
 def insert_page(client: Client, database_id: str,
-                task_title: str) -> None | str:
+                task_title: str) :
     '''Insert a page with a given task title and status set to "Inboxed".'''
     parent = {"database_id": database_id, "type": "database_id"}
 
@@ -120,7 +120,7 @@ def insert_page(client: Client, database_id: str,
         },
     }
     response = client.pages.create(parent=parent, properties=properties)
-    return response["id"]
+    return response
 
 
 # client = Client(auth=notion_token, log_level=logging.DEBUG)

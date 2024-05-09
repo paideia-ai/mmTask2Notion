@@ -108,12 +108,16 @@ async def receive_task(
       'user_name': task_details.get('user_name')
   }
   # the important content is in text
-  task_content = parsed_details['text']
+  task_content = str(parsed_details['text'])
   print(task_content)
   print("Task Received ")
   notion_token = os.environ['NOTION_API']
   database_id = "a05b2e9a2a38458db15a682ce03e9a4c"
-  client = Client(auth=notion_token, log_level=logging.DEBUG)
-  page = push2notion.insert_page(client, database_id, str(task_content))
+  client = Client(auth=notion_token, log_level=logging.ERROR)
+  page = push2notion.insert_page(client, database_id, task_content)
+  print(page)
+  url = page["url"]
   # return page
-  return {"message": "Task received", "parsed_details": parsed_details}
+  return {"response_type":"in_channel",\
+          "username":"task_automation",
+          "text":f"Task received: {task_content}\n {url}\n reminder: please check the task in notion, and fill in details accordingly"}
