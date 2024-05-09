@@ -7,11 +7,13 @@ from typing import Union
 from fastapi import FastAPI
 import os
 import logging
+import push2notion
+from notion_client import Client
 
 logging.basicConfig(level=logging.INFO,
                     format='%(asctime)s - %(levelname)s - %(message)s')
 
-app_secret = os.environ['APP_SECRET']
+# app_secret = os.environ['APP_SECRET']
 mm_secret = os.environ['MM_CMD_TOKEN']
 app = FastAPI()
 
@@ -41,7 +43,6 @@ class HTTPToken:
 
 
 app_security = HTTPToken()
-
 
 # @app.middleware("http")
 # async def log_requests(request: Request, call_next):
@@ -81,7 +82,7 @@ def read_item(
 
 @app.get("/")
 def hello_world():
-  print("test print log")
+  # print("test print log")
   return {"message": "Hello World"}
 
 
@@ -106,4 +107,13 @@ async def receive_task(
       'user_id': task_details.get('user_id'),
       'user_name': task_details.get('user_name')
   }
+  # the important content is in text
+  task_content = parsed_details['text']
+  print(task_content)
+  print("Task Received ")
+  notion_token = os.environ['NOTION_API']
+  database_id = "a05b2e9a2a38458db15a682ce03e9a4c"
+  client = Client(auth=notion_token, log_level=logging.DEBUG)
+  page = push2notion.insert_page(client, database_id, str(task_content))
+  # return page
   return {"message": "Task received", "parsed_details": parsed_details}
