@@ -43,28 +43,28 @@ class HTTPToken:
 app_security = HTTPToken()
 
 
-@app.middleware("http")
-async def log_requests(request: Request, call_next):
-  start_time = time.time()
-  # Log Basic Request Details (Method, URL)
-  print(f"Request: {request.method} {request.url}")
-  # Log Request Headers
-  print(f"Headers: {request.headers.items()}")
-  try:
-    # Log Request Body
-    # body = await request.body()
-    body = ""
-    # Note: body is bytes, so decode or use json.loads() as needed
-    # body_str = body.decode('utf-8')  # Example decoding to string
-    # print(f"Body: {body_str}")
-  except Exception as e:
-    print(f"Error reading body: {e}")
-  # Proceed with the request
-  response = await call_next(request)
-  # Calculate request processing time
-  process_time = time.time() - start_time
-  print(f"Request processed in {process_time} secs")
-  return response
+# @app.middleware("http")
+# async def log_requests(request: Request, call_next):
+#   start_time = time.time()
+#   # Log Basic Request Details (Method, URL)
+#   print(f"Request: {request.method} {request.url}")
+#   # Log Request Headers
+#   print(f"Headers: {request.headers.items()}")
+#   try:
+#     # Log Request Body
+#     # body = await request.body()
+#     body = ""
+#     # Note: body is bytes, so decode or use json.loads() as needed
+#     # body_str = body.decode('utf-8')  # Example decoding to string
+#     # print(f"Body: {body_str}")
+#   except Exception as e:
+#     print(f"Error reading body: {e}")
+#   # Proceed with the request
+#   response = await call_next(request)
+#   # Calculate request processing time
+#   process_time = time.time() - start_time
+#   print(f"Request processed in {process_time} secs")
+#   return response
 
 
 @app.post("/items/{item_id}")
